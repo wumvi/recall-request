@@ -26,7 +26,7 @@ class ReCallRequestDao extends DbDao
         $this->db->call('delete from tasks where id = :id', [
             'id' => $id,
         ]);
-    } 
+    }
 
     public function incrementTry(int $id): void
     {
