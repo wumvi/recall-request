@@ -1,0 +1,97 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "09c5cec61fbbfb7a408885e41eea3b76",
+    "packages": [
+        {
+            "name": "wumvi/curl",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wumvi/curl.git",
+                "reference": "7867b588423c92cbc6edc27400f865fd2575e65e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wumvi/curl/zipball/7867b588423c92cbc6edc27400f865fd2575e65e",
+                "reference": "7867b588423c92cbc6edc27400f865fd2575e65e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*"
+            },
+            "require-dev": {
+                "overtrue/phplint": "2.0.2",
+                "phan/phan": "3.0.2",
+                "phpstan/phpstan": "0.12.28",
+                "phpunit/phpunit": "9.2.2",
+                "squizlabs/php_codesniffer": "3.5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wumvi\\Curl\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kozlenko Vitaliy",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Plugin Curl library",
+            "time": "2020-06-17T20:49:28+00:00"
+        },
+        {
+            "name": "wumvi/sqlite3dao",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wumvi/sqlitedao.git",
+                "reference": "e9ba863f366406d8d2db8d23c424b47f4a6633c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wumvi/sqlitedao/zipball/e9ba863f366406d8d2db8d23c424b47f4a6633c0",
+                "reference": "e9ba863f366406d8d2db8d23c424b47f4a6633c0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wumvi\\Sqlite3Dao\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Vitaliy Kozlenko",
+                    "email": "vk@wumvi.com"
+                }
+            ],
+            "time": "2020-09-19T17:58:51+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
+}
