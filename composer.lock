@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "09c5cec61fbbfb7a408885e41eea3b76",
+    "content-hash": "10879782dbb7a48ce4dc3fafa51d2c63",
     "packages": [
         {
             "name": "wumvi/curl",
@@ -51,16 +51,16 @@
         },
         {
             "name": "wumvi/sqlite3dao",
-            "version": "v1.0.1",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wumvi/sqlitedao.git",
-                "reference": "e9ba863f366406d8d2db8d23c424b47f4a6633c0"
+                "reference": "1ca69849f940e44995ae3b1fb6f23b3226e36839"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wumvi/sqlitedao/zipball/e9ba863f366406d8d2db8d23c424b47f4a6633c0",
-                "reference": "e9ba863f366406d8d2db8d23c424b47f4a6633c0",
+                "url": "https://api.github.com/repos/wumvi/sqlitedao/zipball/1ca69849f940e44995ae3b1fb6f23b3226e36839",
+                "reference": "1ca69849f940e44995ae3b1fb6f23b3226e36839",
                 "shasum": ""
             },
             "require": {
@@ -82,7 +82,7 @@
                     "email": "vk@wumvi.com"
                 }
             ],
-            "time": "2020-09-19T17:58:51+00:00"
+            "time": "2020-09-21T10:34:51+00:00"
         }
     ],
     "packages-dev": [],
