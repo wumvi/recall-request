@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Wumvi\ReCallRequest;
 
 use Wumvi\Curl\Curl;
+use Wumvi\Curl\Exception\CurlConnectionTimeoutException;
+use Wumvi\Curl\Exception\CurlTimeoutException;
 use Wumvi\Curl\Pipe\PostMethodPipe;
 
 class ReCallRequestService
@@ -15,14 +17,14 @@ class ReCallRequestService
         $this->reCallRequestDao = $reCallRequestDao;
     }
 
-    public function add(string $url, string $method = 'GET', string $data = '')
+    public function addRecord(string $url, string $method = 'GET', string $data = '')
     {
-        $this->reCallRequestDao->add($url, $method, $data);
+        $this->reCallRequestDao->addRecord($url, $method, $data);
     }
 
     public function reCall()
     {
-        $list = $this->reCallRequestDao->getAll();
+        $list = $this->reCallRequestDao->getRecords();
 
         $postPipe = new PostMethodPipe();
         $curlGet = new Curl();
@@ -32,21 +34,31 @@ class ReCallRequestService
 
         foreach ($list as $item) {
             $url = $item['url'];
-
-            if ($item['method'] === 'GET') {
-                $curlGet->setUrl($url);
-                $code = $curlGet->exec()->getHttpCode();
-            } else {
-                $postPipe->setData($item['data']);
-                $curlPost->setUrl($url);
-                $curlPost->applyPipe($postPipe);
-                $code = $curlPost->exec()->getHttpCode();
+            $recordId = (int)$item['id'];
+            try {
+                if ($item['method'] === 'GET') {
+                    $curlGet->setUrl($url);
+                    $code = $curlGet->exec()->getHttpCode();
+                } else {
+                    $postPipe->setData($item['data']);
+                    $curlPost->setUrl($url);
+                    $curlPost->applyPipe($postPipe);
+                    $code = $curlPost->exec()->getHttpCode();
+                }
+            } catch (CurlTimeoutException | CurlConnectionTimeoutException $ex) {
+                $type = $ex instanceof CurlTimeoutException ? 'read' : 'connect';
+                $this->reCallRequestDao->setErrorToRecord($recordId, $type . ' timeout');
+                continue;
+            } catch (\Throwable $ex) {
+                $this->reCallRequestDao->setErrorToRecord($recordId, $ex->getMessage());
+                continue;
             }
 
             if ($code === 200) {
-                $this->reCallRequestDao->removeById($item['id']);
+                $this->reCallRequestDao->removeRecord($recordId);
             } else {
-                $this->reCallRequestDao->incrementTry($item['id']);
+                $error = 'Code status ' . $code;
+                $this->reCallRequestDao->setErrorToRecord($recordId, $error);
             }
         }
 

@@ -12,7 +12,13 @@
     }
   ],
   "require": {
-    "wumvi/sqlite3dao": "v1.0.4",
+    "wumvi/mysqldao": "v1.0.1",
     "wumvi/curl": "v1.0.0"
+  },
+  "archive": {
+    "exclude": [
+      "README.md",
+      "dev"
+    ]
   }
 }
