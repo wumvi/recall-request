@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Wumvi\ReCallRequest;
 
+use Wumvi\Curl\ContentType;
 use Wumvi\Curl\Curl;
 use Wumvi\Curl\Exception\CurlConnectionTimeoutException;
 use Wumvi\Curl\Exception\CurlTimeoutException;
@@ -23,10 +24,39 @@ class ReCallRequestService
         string $url,
         string $method = 'GET',
         string $data = '',
-        string $contentType = ''
+        array $headers = []
     )
     {
-        $this->reCallRequestDao->addRecord($name, $url, $method, $data, $contentType);
+        $headers = json_encode($headers);
+        $this->reCallRequestDao->addRecord($name, $url, $method, $data, $headers);
+    }
+
+    public function httpSend(
+        string $name,
+        string $url,
+        string $method = 'GET',
+        string $postData = '',
+        array $headers = []
+    )
+    {
+        try {
+            $curl = new Curl();
+            $headerPipe = new HeaderPipe($headers);
+            if ($method === 'POST') {
+                $postPipe = new PostMethodPipe();
+                $postPipe->setData($postData);
+                $curl->applyPipe($postPipe);
+            }
+            $curl->applyPipe($headerPipe);
+            $curl->setUrl($url);
+            $response = $curl->exec();
+            $code = $response->getHttpCode();
+            if (200 <= $code && $code <= 299) {
+                $this->addRecord($name, $url, $method, $postData, $headers);
+            }
+        } catch (\Exception $ex) {
+            $this->addRecord($name, $url, $method, $postData, $headers);
+        }
     }
 
     public function reCall()
@@ -48,12 +78,13 @@ class ReCallRequestService
                     $curlGet->setUrl($url);
                     $code = $curlGet->exec()->getHttpCode();
                 } else {
-                    $contentType = $item['content_type'];
-                    $postPipe->setData($item['data'], $contentType);
+                    $headers = json_decode($item['headers'], true, 4, JSON_THROW_ON_ERROR);
+                    $contentType = $headers[ContentType::CONTENT_TYPE] ?? '';
+                    $postPipe->setData($item['data'], $contentType . '');
                     $curlPost->setUrl($url);
                     $curlPost->applyPipe($postPipe);
-                    if (!empty($contentType)) {
-                        $headerPipe->setHeader(['Content-Type' => $contentType]);
+                    if (!empty($headers)) {
+                        $headerPipe->setHeader($headers);
                         $curlPost->applyPipe($headerPipe);
                     }
                     $code = $curlPost->exec()->getHttpCode();

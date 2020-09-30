@@ -12,15 +12,15 @@ class ReCallRequestDao extends DbDao
         string $url,
         string $method = 'GET',
         string $data = '',
-        string $contentType = ''
+        ?string $headers = null
     )
     {
-        $this->db->call('call recall_add_record(:name, :url, :method, :data, :content_type)', [
+        $this->db->call('call recall_add_record(:name, :url, :method, :data, :headers)', [
             'name' => $name,
             'url' => $url,
             'method' => $method,
             'data' => $data,
-            'content_type' => $contentType,
+            'headers' => $headers,
         ]);
     }
 
