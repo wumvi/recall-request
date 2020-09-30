@@ -37,10 +37,12 @@ class ReCallRequestService
         string $method = 'GET',
         string $postData = '',
         array $headers = []
-    )
+    ): bool
     {
+        $status = true;
         try {
             $curl = new Curl();
+            $curl->setTimeout(2);
             $headerPipe = new HeaderPipe($headers);
             if ($method === 'POST') {
                 $postPipe = new PostMethodPipe();
@@ -51,12 +53,16 @@ class ReCallRequestService
             $curl->setUrl($url);
             $response = $curl->exec();
             $code = $response->getHttpCode();
-            if (200 <= $code && $code <= 299) {
+            if ($code < 200 || 299 < $code) {
                 $this->addRecord($name, $url, $method, $postData, $headers);
+                $status = false;
             }
         } catch (\Exception $ex) {
             $this->addRecord($name, $url, $method, $postData, $headers);
+            $status = false;
         }
+
+        return $status;
     }
 
     public function reCall()
