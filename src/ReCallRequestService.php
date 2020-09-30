@@ -17,9 +17,9 @@ class ReCallRequestService
         $this->reCallRequestDao = $reCallRequestDao;
     }
 
-    public function addRecord(string $url, string $method = 'GET', string $data = '')
+    public function addRecord(string $name, string $url, string $method = 'GET', string $data = '')
     {
-        $this->reCallRequestDao->addRecord($url, $method, $data);
+        $this->reCallRequestDao->addRecord($name, $url, $method, $data);
     }
 
     public function reCall()

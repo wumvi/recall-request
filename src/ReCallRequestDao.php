@@ -7,9 +7,10 @@ use Wumvi\MysqlDao\DbDao;
 
 class ReCallRequestDao extends DbDao
 {
-    public function addRecord(string $url, string $method = 'GET', string $data = '')
+    public function addRecord(string $name, string $url, string $method = 'GET', string $data = '')
     {
-        $this->db->call('call recall_add_record(:url, :method, :data)', [
+        $this->db->call('call recall_add_record(:name, :url, :method, :data)', [
+            'name' => $name,
             'url' => $url,
             'method' => $method,
             'data' => $data,
