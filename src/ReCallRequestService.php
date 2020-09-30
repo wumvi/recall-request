@@ -6,6 +6,7 @@ namespace Wumvi\ReCallRequest;
 use Wumvi\Curl\Curl;
 use Wumvi\Curl\Exception\CurlConnectionTimeoutException;
 use Wumvi\Curl\Exception\CurlTimeoutException;
+use Wumvi\Curl\Pipe\HeaderPipe;
 use Wumvi\Curl\Pipe\PostMethodPipe;
 
 class ReCallRequestService
@@ -17,9 +18,15 @@ class ReCallRequestService
         $this->reCallRequestDao = $reCallRequestDao;
     }
 
-    public function addRecord(string $name, string $url, string $method = 'GET', string $data = '')
+    public function addRecord(
+        string $name,
+        string $url,
+        string $method = 'GET',
+        string $data = '',
+        string $contentType = ''
+    )
     {
-        $this->reCallRequestDao->addRecord($name, $url, $method, $data);
+        $this->reCallRequestDao->addRecord($name, $url, $method, $data, $contentType);
     }
 
     public function reCall()
@@ -31,6 +38,7 @@ class ReCallRequestService
         $curlGet->setTimeout(4);
         $curlPost = new Curl();
         $curlPost->setTimeout(4);
+        $headerPipe = new HeaderPipe([]);
 
         foreach ($list as $item) {
             $url = $item['url'];
@@ -40,9 +48,14 @@ class ReCallRequestService
                     $curlGet->setUrl($url);
                     $code = $curlGet->exec()->getHttpCode();
                 } else {
-                    $postPipe->setData($item['data']);
+                    $contentType = $item['content_type'];
+                    $postPipe->setData($item['data'], $contentType);
                     $curlPost->setUrl($url);
                     $curlPost->applyPipe($postPipe);
+                    if (!empty($contentType)) {
+                        $headerPipe->setHeader(['Content-Type' => $contentType]);
+                        $curlPost->applyPipe($headerPipe);
+                    }
                     $code = $curlPost->exec()->getHttpCode();
                 }
             } catch (CurlTimeoutException | CurlConnectionTimeoutException $ex) {
@@ -54,7 +67,7 @@ class ReCallRequestService
                 continue;
             }
 
-            if ($code === 200) {
+            if (200 <= $code && $code <= 299) {
                 $this->reCallRequestDao->removeRecord($recordId);
             } else {
                 $error = 'Code status ' . $code;
