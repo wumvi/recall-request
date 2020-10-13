@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f61a34845ffcebbf908b5b77b20d6a04",
+    "content-hash": "b71f46b2892ed44db0cb29e95d07540f",
     "packages": [
         {
             "name": "wumvi/curl",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wumvi/curl.git",
-                "reference": "7867b588423c92cbc6edc27400f865fd2575e65e"
+                "reference": "0ae7150a49ffd0727680e639ab6d87727cd0a84b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wumvi/curl/zipball/7867b588423c92cbc6edc27400f865fd2575e65e",
-                "reference": "7867b588423c92cbc6edc27400f865fd2575e65e",
+                "url": "https://api.github.com/repos/wumvi/curl/zipball/0ae7150a49ffd0727680e639ab6d87727cd0a84b",
+                "reference": "0ae7150a49ffd0727680e639ab6d87727cd0a84b",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 }
             ],
             "description": "Plugin Curl library",
-            "time": "2020-06-17T20:49:28+00:00"
+            "time": "2020-10-07T22:54:45+00:00"
         },
         {
             "name": "wumvi/mysqldao",
