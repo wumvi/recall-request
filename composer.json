@@ -13,7 +13,7 @@
   ],
   "require": {
     "wumvi/mysqldao": "v1.0.1",
-    "wumvi/curl": "v1.0.1"
+    "wumvi/curl": "v1.0.2"
   },
   "archive": {
     "exclude": [
